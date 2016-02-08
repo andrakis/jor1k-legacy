@@ -2409,24 +2409,48 @@ function MainLoop() {
     */
 }
 
-var term = new Terminal(25, 80, "Terminal");
-DebugMessage("Terminal initialized");
-new TerminalInput();
-DebugMessage("Terminal input initialized");
-var fb = new Framebuffer();
-DebugMessage("Framebuffer initialized");
-var ram = new RAM(0x2000000);
-DebugMessage("RAM initialized");
-var uart = new UART();
-DebugMessage("UART initialized");
-var cpu = new CPU();
-DebugMessage("CPU initialized");
+if (typeof document != "undefined") {
+	var term = new Terminal(25, 80, "Terminal");
+	DebugMessage("Terminal initialized");
+	new TerminalInput();
+	DebugMessage("Terminal input initialized");
+	var fb = new Framebuffer();
+	DebugMessage("Framebuffer initialized");
+	var ram = new RAM(0x2000000);
+	DebugMessage("RAM initialized");
+	var uart = new UART();
+	DebugMessage("UART initialized");
+	var cpu = new CPU();
+	DebugMessage("CPU initialized");
 
-DebugMessage("Loading Image");
-var str = "Loading Image from Web Server (5 MB). Please wait ..."
-for (var i = 0; i < str.length; i++) {
-    term.PutChar(str.charCodeAt(i));
+	DebugMessage("Loading Image");
+	var str = "Loading Image from Web Server (5 MB). Please wait ..."
+	for (var i = 0; i < str.length; i++) {
+		term.PutChar(str.charCodeAt(i));
+	}
+
+	//LoadBinaryResource("trace"+ntrace+".dat", TraceFinish);
+	LoadBinaryResource("bin/vmlinux.bin", ImageFinished);
+} else {
+	exports = module.exports = {
+		Terminal: Terminal,
+		TerminalInput: TerminalInput,
+		Framebuffer: Framebuffer,
+		DebugMessage: DebugMessage,
+		abort: abort,
+		Swap32: Swap32,
+		int32: int32,
+		uint32: uint32,
+		hex8: hex8,
+		PrintState: PrintState,
+		LoadBinaryResource: LoadBinaryResource,
+		UART: UART,
+		RAM: RAM,
+		CPU: CPU,
+		TraceFinish: TraceFinish,
+		TraceFinish2: TraceFinish2,
+		CopyBinary: CopyBinary,
+		ImageFinished: ImageFinished,
+		MainLoop: MainLoop,
+	};
 }
-
-//LoadBinaryResource("trace"+ntrace+".dat", TraceFinish);
-LoadBinaryResource("bin/vmlinux.bin", ImageFinished);
