@@ -2409,18 +2409,25 @@ function MainLoop() {
     */
 }
 
+
+var term;
+var fb;
+var ram;
+var uart;
+var cpu;
+
 if (typeof document != "undefined") {
-	var term = new Terminal(25, 80, "Terminal");
+	term = new Terminal(25, 80, "Terminal");
 	DebugMessage("Terminal initialized");
 	new TerminalInput();
 	DebugMessage("Terminal input initialized");
-	var fb = new Framebuffer();
+	fb = new Framebuffer();
 	DebugMessage("Framebuffer initialized");
-	var ram = new RAM(0x2000000);
+	ram = new RAM(0x2000000);
 	DebugMessage("RAM initialized");
-	var uart = new UART();
+	uart = new UART();
 	DebugMessage("UART initialized");
-	var cpu = new CPU();
+	cpu = new CPU();
 	DebugMessage("CPU initialized");
 
 	DebugMessage("Loading Image");
@@ -2433,6 +2440,16 @@ if (typeof document != "undefined") {
 	LoadBinaryResource("bin/vmlinux.bin", ImageFinished);
 } else {
 	exports = module.exports = {
+		getTerm: function() { return term; },
+		setTerm: function(t) { return term = t; },
+		getFb:   function() { return fb; },
+		setFb:   function(f) { return fb = f; },
+		getRam:  function() { return ram; },
+		setRam:  function(r) { return ram = r; },
+		getUart: function() { return uart; },
+		setUart: function(u) { return uart = u; },
+		getCpu:  function() { return cpu; },
+		setCpu:  function(c) { return cpu = c; },
 		Terminal: Terminal,
 		TerminalInput: TerminalInput,
 		Framebuffer: Framebuffer,
